@@ -4,18 +4,50 @@ const SideNav = () => {
   const links = [
     {
       name: "Sets",
-      url: "/your-sets",
+      url: "/sets/tomjneill",
       icon: "",
     },
     {
       name: "Followers",
       url: "/your-followers",
-      icon: "",
+      icon: (
+        <svg
+          className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+          />
+        </svg>
+      ),
     },
     {
       name: "Profile",
-      url: "/profile",
-      icon: "",
+      url: "/profile/tomjneill",
+      icon: (
+        <svg
+          className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      ),
     },
   ];
 
@@ -60,51 +92,25 @@ const SideNav = () => {
                 Home
               </a>
             </Link>
-            <Link href="/profile/tomjneill">
-              <a className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                {/* Heroicon name: outline/users */}
-                <svg
-                  className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
-                Profile
-                {/* Current: "bg-white", Default: "bg-gray-100 group-hover:bg-gray-200" */}
-                <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
-                  3
-                </span>
-              </a>
-            </Link>
+            {links.map((link) => (
+              <Link href="/profile/tomjneill">
+                <a className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                  {/* Heroicon name: outline/users */}
+                  {link.icon}
+                  Profile
+                  {/* Current: "bg-white", Default: "bg-gray-100 group-hover:bg-gray-200" */}
+                  <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
+                    3
+                  </span>
+                </a>
+              </Link>
+            ))}
+
             <a
               href="#"
               className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
             >
               {/* Heroicon name: outline/folder */}
-              <svg
-                className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                />
-              </svg>
               Projects
               <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
                 4
