@@ -1,15 +1,55 @@
-const Book = ({ rank, title, author_name, thumbnail, isRanked }) => {
+import { FaEdit } from "react-icons/fa";
+
+const Book = ({
+  id,
+  rank,
+  title,
+  author_name,
+  image,
+  isRanked,
+  subtitle,
+  comment,
+  onEdit,
+}) => {
   return (
     <a href="#" target="_blank" rel="noopener noreferrer">
       <div className="flex w-full">
         {isRanked && (
           <div className="text-6xl font-bold mr-4 opacity-80">{rank}</div>
         )}
-        <div className="flex rounded-lg mb-4 border border-gray-200 overflow-hidden w-full">
-          <img src={thumbnail} className="h-full w-20 object-cover" />
-          <div className="p-4">
-            <span className="font-bold pr-2">{title}</span>·
-            <span className="pl-2 opacity-80">{author_name}</span>
+        <div className="flex justify-between rounded-lg mb-4 border border-gray-200 overflow-hidden w-full">
+          <div className="flex">
+            <img src={image} className="h-full w-20 object-cover" />
+            <div className="p-4">
+              <span className="font-bold pr-2">
+                {title}{" "}
+                {subtitle && (
+                  <span className="font-light">{`- ${subtitle}`}</span>
+                )}
+              </span>
+              ·
+              <span className="pl-2 opacity-80">
+                {Array.isArray(author_name)
+                  ? author_name.join(", ")
+                  : author_name}
+              </span>
+              <p className="mt-2">{comment}</p>
+            </div>
+          </div>
+          <div className="block">
+            <button
+              className="border border-gray-200 rounded flex items-center px-2 mx-2 mt-2 py-1 hover:border-purple-400 focus:border-purple-400  hover:text-purple-700"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                if (onEdit) {
+                  onEdit(id);
+                }
+              }}
+            >
+              {" "}
+              <FaEdit className="mr-2" /> Edit
+            </button>
           </div>
         </div>
       </div>

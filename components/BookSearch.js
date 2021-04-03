@@ -26,7 +26,7 @@ const BookSearch = ({ onSelect }) => {
         })
         .then((result) => {
           console.log({ result });
-          setInputItems(result.docs?.slice(0, 10));
+          setInputItems(result?.docs?.slice(0, 10));
         });
       return () => {
         ignore = true;
@@ -49,7 +49,7 @@ const BookSearch = ({ onSelect }) => {
 
       <input
         type="text"
-        className="border border-gray-200 rounded block p-2"
+        className="border border-gray-200 rounded block p-2 w-full mt-2"
         placeholder="Search books"
         aria-label="search"
         onChange={(e) => setSearchValue(e.target.value)}

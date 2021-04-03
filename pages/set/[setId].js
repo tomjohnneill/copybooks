@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/initSupabase";
 import Book from "../../components/Book";
 import { FaRegHeart, FaShareSquare, FaPlus } from "react-icons/fa";
@@ -6,25 +6,33 @@ import BookSearch from "../../components/BookSearch";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
 
-const dummySet = {};
-
-const books = [
-  {
-    author_name: "Geoffrey West",
-    title: "Scale",
-    rank: 1,
-    thumbnail: "https://covers.openlibrary.org/b/id/8814864-L.jpg",
-  },
-  {
-    author_name: "William J Bernstein",
-    title: "A Splendid Exchange",
-    rank: 2,
-    thumbnail: "https://covers.openlibrary.org/b/id/5540145-L.jpg",
-  },
-];
+const fetchData = async (setId) => {
+  let { data: set, error } = await supabase
+    .from("sets")
+    .select(
+      `
+      id,
+      name,
+      emoji,
+      description,
+      image,
+      book_views (
+        book,
+        id
+      )
+    `
+    )
+    .eq("id", setId)
+    .order("id", true);
+  return { set, error };
+};
 
 const Set = (props) => {
-  const { set } = props;
+  const [set, setSet] = useState(props.set);
+
+  useEffect(() => {
+    setSet(props.set);
+  }, [props.set]);
 
   const {
     description,
@@ -37,12 +45,34 @@ const Set = (props) => {
     created,
   } = set || {};
 
+  console.log({ set });
+
   const { book_views: books } = set || {};
 
   const [addBookVisible, setAddBookVisible] = useState(false);
   const handleAddBook = () => {
     setAddBookVisible(true);
   };
+
+  const [updateCount, setUpdateCount] = useState(0);
+
+  const updateData = async (setId) => {
+    const { error, set } = await fetchData(setId);
+    setSet(set?.[0]);
+  };
+
+  useEffect(() => {
+    if (updateCount > 0) {
+      updateData(set.id);
+    }
+  }, [updateCount]);
+
+  const [focusedBook, setFocusedBook] = useState(null);
+  useEffect(() => {
+    if (focusedBook) {
+      setAddBookVisible(true);
+    }
+  }, [focusedBook]);
 
   return (
     <div className="w-full ">
@@ -51,7 +81,13 @@ const Set = (props) => {
           title="New book details"
           handleClose={() => setAddBookVisible(false)}
         >
-          <AddBook />
+          <AddBook
+            setId={set.id}
+            onFinish={() => {
+              setAddBookVisible(false);
+              setUpdateCount(updateCount + 1);
+            }}
+          />
         </Drawer>
       )}
       <img src={image} className="w-full h-64 object-cover" />
@@ -84,15 +120,20 @@ const Set = (props) => {
           </div>
         </div>
         <p className="opacity-80 mt-4 max-w-3xl">{description}</p>
-        <h3 className="pt-8 opacity-80 font-light text-xl">
-          Books in this set
-        </h3>
+
         <div className="pt-4">
-          {books?.map((book) => (
-            <Book {...book.book} isRanked />
+          {books?.map((book, i) => (
+            <Book
+              {...book.book}
+              {...book}
+              rank={i + 1}
+              isRanked
+              onEdit={(id) => {
+                setFocusedBook(id);
+              }}
+            />
           ))}
         </div>
-        <BookSearch />
       </div>
     </div>
   );
@@ -109,21 +150,7 @@ export async function getStaticProps(context) {
   const { params } = context;
   const { setId } = params;
 
-  let { data: set, error } = await supabase
-    .from("sets")
-    .select(
-      `
-      name,
-      emoji,
-      description,
-      image,
-      book_views (
-        book
-      )
-    `
-    )
-    .eq("id", setId)
-    .order("id", true);
+  const { error, set } = await fetchData(setId);
   if (error) console.log("error", error);
 
   return {
