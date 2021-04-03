@@ -25,7 +25,7 @@ const dummyPosts = [
     avatar:
       "https://pbs.twimg.com/profile_images/1101504816776470528/TXkjNsWH_bigger.png",
     content: 'Added 6 books to the "Shipping, Trade and Geography" set',
-    link: "/set/id",
+    link: "/set/46c1418a-c5bb-4e60-89cf-ae4b80181e4e",
     linkType: "set",
     linkImage:
       "https://images.unsplash.com/photo-1550399105-c4db5fb85c18?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",

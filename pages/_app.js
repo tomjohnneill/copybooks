@@ -1,4 +1,6 @@
 import "tailwindcss/tailwind.css";
+import { useEffect } from "react";
+import { supabase } from "../lib/initSupabase";
 import SideNav from "../components/SideNav";
 import styles from "../styles/Home.module.css";
 
