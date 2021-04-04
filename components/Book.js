@@ -10,6 +10,7 @@ const Book = ({
   subtitle,
   comment,
   onEdit,
+  onDelete,
 }) => {
   return (
     <a href="#" target="_blank" rel="noopener noreferrer">
@@ -44,8 +45,8 @@ const Book = ({
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  if (onEdit) {
-                    onEdit(id);
+                  if (onDelete) {
+                    onDelete(id);
                   }
                 }}
               >

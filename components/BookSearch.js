@@ -45,7 +45,7 @@ const BookSearch = ({ onSelect }) => {
 
   return (
     <form>
-      <label>Look up a book:</label>
+      <label>Look up a book (can be a little bit temperamental):</label>
 
       <input
         type="text"

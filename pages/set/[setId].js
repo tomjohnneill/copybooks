@@ -52,6 +52,7 @@ const Set = (props) => {
 
   const [addBookVisible, setAddBookVisible] = useState(false);
   const handleAddBook = () => {
+    setFocusedBook(null);
     setAddBookVisible(true);
   };
 
@@ -76,6 +77,18 @@ const Set = (props) => {
   }, [focusedBook]);
 
   const [editSetVisible, setEditSetVisible] = useState(false);
+
+  const handleDelete = async (id) => {
+    const { data, error } = await supabase
+      .from("book_views")
+      .delete()
+      .match({ id });
+    if (error) {
+      alert(error.message);
+    } else {
+      setUpdateCount(updateCount + 1);
+    }
+  };
 
   return (
     <div className="w-full ">
@@ -155,6 +168,7 @@ const Set = (props) => {
               {...book}
               rank={i + 1}
               isRanked
+              onDelete={(id) => handleDelete(id)}
               onEdit={(id) => {
                 setFocusedBook(book);
               }}
