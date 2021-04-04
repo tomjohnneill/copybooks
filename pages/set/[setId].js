@@ -6,6 +6,7 @@ import BookSearch from "../../components/BookSearch";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
 import AddSet from "../../components/AddSet";
+import Head from "next/head";
 
 const fetchData = async (setId) => {
   let { data: set, error } = await supabase
@@ -91,7 +92,22 @@ const Set = (props) => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
+      <Head>
+        <title>{name}</title>
+        <meta name="description" content={description} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={name} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+        <meta property="og:title" content={name} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta
+          property="og:url"
+          content={`https://copybooks.app/set/` + set.id}
+        />
+      </Head>
       {!editSetVisible && (
         <button
           onClick={() => setEditSetVisible(true)}
