@@ -1,4 +1,8 @@
+import Router from "next/router";
 import Link from "next/link";
+import { useState } from "react";
+import AddSet from "./AddSet";
+import Drawer from "./Drawer";
 
 const SideNav = () => {
   const links = [
@@ -51,6 +55,8 @@ const SideNav = () => {
     },
   ];
 
+  const [addSet, setAddSet] = useState(false);
+
   return (
     <nav className="h-full w-64 h-screen ">
       <div className="flex flex-col h-full flex-1 border-r border-gray-200 bg-white fixed top-0 w-64">
@@ -97,7 +103,7 @@ const SideNav = () => {
                 <a className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                   {/* Heroicon name: outline/users */}
                   {link.icon}
-                  Profile
+                  {link.name}
                   {/* Current: "bg-white", Default: "bg-gray-100 group-hover:bg-gray-200" */}
                   <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
                     3
@@ -106,85 +112,12 @@ const SideNav = () => {
               </Link>
             ))}
 
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+            <button
+              onClick={() => setAddSet(true)}
+              className="w-full py-2 rounded-full bg-purple-700 text-white font-bold text-md"
             >
-              {/* Heroicon name: outline/folder */}
-              Projects
-              <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
-                4
-              </span>
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-            >
-              {/* Heroicon name: outline/calendar */}
-              <svg
-                className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Calendar
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-            >
-              {/* Heroicon name: outline/inbox */}
-              <svg
-                className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                />
-              </svg>
-              Documents
-              <span className="bg-gray-100 group-hover:bg-gray-200 ml-auto inline-block py-0.5 px-3 text-xs font-medium rounded-full">
-                12
-              </span>
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-            >
-              {/* Heroicon name: outline/chart-bar */}
-              <svg
-                className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
-              Reports
-            </a>
+              Add Set
+            </button>
           </nav>
         </div>
         <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
@@ -211,6 +144,17 @@ const SideNav = () => {
           </Link>
         </div>
       </div>
+      {addSet && (
+        <Drawer title="Add new set" handleClose={() => setAddSet(false)}>
+          <AddSet
+            onFinish={(data) => {
+              const { id } = data[0];
+              setAddSet(false);
+              Router.push(`/set/${id}`);
+            }}
+          />
+        </Drawer>
+      )}
     </nav>
   );
 };

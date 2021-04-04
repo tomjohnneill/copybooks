@@ -105,7 +105,7 @@ const Set = (props) => {
         <meta property="og:image" content={image} />
         <meta
           property="og:url"
-          content={`https://copybooks.app/set/` + set.id}
+          content={`https://copybooks.app/set/` + set?.id}
         />
       </Head>
       {!editSetVisible && (

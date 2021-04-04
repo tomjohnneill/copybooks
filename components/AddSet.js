@@ -21,7 +21,7 @@ const AddSet = ({ existingSet, onFinish }) => {
       : await supabase.from("sets").insert([{ ...rest }]);
     if (!error) {
       if (onFinish) {
-        onFinish();
+        onFinish(data);
       }
     } else {
       alert(error.message);
@@ -52,7 +52,18 @@ const AddSet = ({ existingSet, onFinish }) => {
         src={details.image}
         className="h-48 rounded my-2 w-full object-cover"
       />
-      <label>Cover Image URL</label>
+      <label>
+        Cover Image URL (try{" "}
+        <a
+          className="underline"
+          href="https://unsplash.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          unsplash
+        </a>
+        )
+      </label>
       <input
         value={details.image}
         onChange={(e) => setDetails({ ...details, image: e.target.value })}

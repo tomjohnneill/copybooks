@@ -39,7 +39,7 @@ const EmojiPicker = ({ defaultEmoji, onChange }) => {
       </button>
       {pickerOpen && (
         <div className="absolute z-30">
-          <Picker onEmojiClick={onEmojiClick} emoji={chosenEmoji.emoji} />
+          <Picker onEmojiClick={onEmojiClick} emoji={chosenEmoji?.emoji} />
         </div>
       )}
     </div>
