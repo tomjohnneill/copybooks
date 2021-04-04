@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/initSupabase";
 import Book from "../../components/Book";
-import { FaRegHeart, FaShareSquare, FaPlus } from "react-icons/fa";
+import { FaRegHeart, FaShareSquare, FaPlus, FaEdit } from "react-icons/fa";
 import BookSearch from "../../components/BookSearch";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
+import AddSet from "../../components/AddSet";
 
 const fetchData = async (setId) => {
   let { data: set, error } = await supabase
@@ -74,17 +75,43 @@ const Set = (props) => {
     }
   }, [focusedBook]);
 
+  const [editSetVisible, setEditSetVisible] = useState(false);
+
   return (
     <div className="w-full ">
+      {!editSetVisible && (
+        <button
+          onClick={() => setEditSetVisible(true)}
+          className="absolute top-0 right-0 bg-white mt-8 mr-8 flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 "
+        >
+          <FaEdit className="mr-2" />
+          Edit Set
+        </button>
+      )}
       {addBookVisible && (
         <Drawer
           title="New book details"
           handleClose={() => setAddBookVisible(false)}
         >
           <AddBook
+            edit={focusedBook}
             setId={set.id}
             onFinish={() => {
               setAddBookVisible(false);
+              setUpdateCount(updateCount + 1);
+            }}
+          />
+        </Drawer>
+      )}
+      {editSetVisible && (
+        <Drawer
+          title="Edit set details"
+          handleClose={() => setEditSetVisible(false)}
+        >
+          <AddSet
+            existingSet={set}
+            onFinish={() => {
+              setEditSetVisible(false);
               setUpdateCount(updateCount + 1);
             }}
           />
@@ -97,7 +124,7 @@ const Set = (props) => {
             <h1 className="text-4xl font-bold my-4">
               {emoji} {name}
             </h1>
-            <div className="ml-4">
+            <div className="ml-4 flex">
               {!addBookVisible && (
                 <button
                   onClick={handleAddBook}
@@ -129,7 +156,7 @@ const Set = (props) => {
               rank={i + 1}
               isRanked
               onEdit={(id) => {
-                setFocusedBook(id);
+                setFocusedBook(book);
               }}
             />
           ))}

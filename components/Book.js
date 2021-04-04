@@ -1,4 +1,4 @@
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const Book = ({
   id,
@@ -37,19 +37,35 @@ const Book = ({
             </div>
           </div>
           <div className="block">
-            <button
-              className="border border-gray-200 rounded flex items-center px-2 mx-2 mt-2 py-1 hover:border-purple-400 focus:border-purple-400  hover:text-purple-700"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                if (onEdit) {
-                  onEdit(id);
-                }
-              }}
-            >
-              {" "}
-              <FaEdit className="mr-2" /> Edit
-            </button>
+            <div className="flex">
+              <button
+                className="border border-gray-200 rounded flex items-center px-2 ml-2 mt-2 
+                py-1 hover:border-red-400 focus:border-red-400  hover:text-red-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  if (onEdit) {
+                    onEdit(id);
+                  }
+                }}
+              >
+                {" "}
+                <FaTrash className="mr-2" /> Delete
+              </button>
+              <button
+                className="border border-gray-200 rounded flex items-center px-2 mx-2 mt-2 py-1 hover:border-purple-400 focus:border-purple-400  hover:text-purple-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  if (onEdit) {
+                    onEdit(id);
+                  }
+                }}
+              >
+                {" "}
+                <FaEdit className="mr-2" /> Edit
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -18,10 +18,10 @@ const bestISBN = (isbn) => {
   }
 };
 
-const AddBook = ({ setId, onFinish }) => {
-  const [details, setDetails] = useState({});
+const AddBook = ({ setId, onFinish, edit }) => {
+  const [details, setDetails] = useState(edit?.book || {});
   const [bookKey, setBookKey] = useState(null);
-  const [bookPicked, setBookPicked] = useState(false);
+  const [bookPicked, setBookPicked] = useState(edit ? true : false);
 
   const handleBookLookup = (item) => {
     setBookPicked(true);
@@ -62,9 +62,14 @@ const AddBook = ({ setId, onFinish }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase
-      .from("book_views")
-      .insert([{ set_id: setId, book: details }]);
+    const { data, error } = edit
+      ? await supabase
+          .from("book_views")
+          .update([{ set_id: setId, book: details }])
+          .match({ id: edit.id })
+      : await supabase
+          .from("book_views")
+          .insert([{ set_id: setId, book: details }]);
     if (!error) {
       onFinish();
     } else {
