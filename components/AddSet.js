@@ -56,7 +56,10 @@ const AddSet = ({ existingSet, onFinish }) => {
         Cover Image URL (try{" "}
         <a
           className="underline"
-          href="https://unsplash.com/"
+          href={`https://unsplash.com/s/photos/${details.name
+            ?.toLowerCase()
+            ?.replace("books", "")
+            ?.trim()}?orientation=landscape`}
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -1,46 +1,48 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/initSupabase";
 
-const dummySets = [
-  {
-    id: "setId",
-    name: "Shipping and global trade",
-    description:
-      "Really good info if you want to know about trade. Especially relevant if you liked istheshipstillstuck.com",
-    image: "https://istheshipstillstuck.com/ever-given.jpg",
-  },
-  {
-    id: "setId",
-    name: "Shipping and global trade",
-    description:
-      "Really good info if you want to know about trade. Especially relevant if you liked istheshipstillstuck.com",
-    image: "https://istheshipstillstuck.com/ever-given.jpg",
-  },
-  {
-    id: "setId",
-    name: "🚢 Shipping and global trade",
-    description:
-      "Really good info if you want to know about trade. Especially relevant if you liked istheshipstillstuck.com",
-    image: "https://istheshipstillstuck.com/ever-given.jpg",
-  },
-  {
-    id: "setId",
-    name: "🚢 Shipping and global trade",
-    description:
-      "Really good info if you want to know about trade. Especially relevant if you liked istheshipstillstuck.com",
-    image: "https://istheshipstillstuck.com/ever-given.jpg",
-  },
-];
+const SetGrid = ({ userId }) => {
+  const [setList, setSetList] = useState([]);
 
-const SetGrid = () => {
+  const fetchData = async (userId) => {
+    let { data: sets, error } = await supabase
+      .from("sets")
+      .select(
+        `
+        id,
+        name,
+        emoji,
+        description,
+        image
+      `
+      )
+      .eq("creator", userId)
+      .order("id", true);
+    if (error) {
+      alert(error.message);
+    } else {
+      setSetList(sets);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      fetchData(userId);
+    }
+  }, [userId]);
+
   return (
     <div className="p-4">
       <div className="grid grid-cols-3 gap-4 ">
-        {dummySets.map((set) => (
+        {setList.map((set) => (
           <Link href={`/set/${set.id}`}>
             <a className="max-w-xl w-full rounded-lg overflow-hidden border border-gray-200">
               <img className="w-full h-32 object-cover" src={set.image} />
               <div className="p-4">
-                <div className="font-bold">{set.name}</div>
+                <div className="font-bold">
+                  {set.emoji} {set.name}
+                </div>
                 <p className="font-light opacity-80">{set.description}</p>
               </div>
             </a>

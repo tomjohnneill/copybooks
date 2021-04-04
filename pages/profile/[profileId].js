@@ -1,7 +1,12 @@
+import { useRouter } from "next/router";
 import FollowBar from "../../components/FollowBar";
 import SetGrid from "../../components/SetGrid";
 
 const Profile = () => {
+  const { query } = useRouter();
+
+  console.log({ query });
+
   return (
     <div className="flex">
       <div>
@@ -17,7 +22,7 @@ const Profile = () => {
           <h2>Tom Neill</h2>
           <p>@tomjneill</p>
         </div>
-        <SetGrid />
+        <SetGrid userId={query?.profileId} />
       </div>
       <FollowBar />
     </div>

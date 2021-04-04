@@ -1,16 +1,15 @@
 import Router from "next/router";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AddSet from "./AddSet";
 import Drawer from "./Drawer";
+import UserContext from "../lib/UserContext";
 
 const SideNav = () => {
+  const { user } = useContext(UserContext);
+  console.log({ user });
+
   const links = [
-    {
-      name: "Sets",
-      url: "/sets/tomjneill",
-      icon: "",
-    },
     {
       name: "Followers",
       url: "/your-followers",
@@ -33,8 +32,8 @@ const SideNav = () => {
       ),
     },
     {
-      name: "Profile",
-      url: "/profile/tomjneill",
+      name: "Your Book Sets",
+      url: `/profile/${user?.id}`,
       icon: (
         <svg
           className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
@@ -74,7 +73,7 @@ const SideNav = () => {
           >
             {/* Current: "bg-gray-100 text-gray-900 hover:text-gray-900 hover:bg-gray-100", Default: "text-gray-600 hover:text-gray-900 hover:bg-gray-50" */}
             <Link href="/">
-              <a className="bg-gray-100 text-gray-900 hover:text-gray-900 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+              <a className="bg-gray-100 text-gray-900 hover:text-gray-900 hover:bg-gray-100 group flex items-center px-2 py-4 text-sm font-medium rounded-md">
                 {/*
     Heroicon name: outline/home
 
@@ -99,8 +98,8 @@ const SideNav = () => {
               </a>
             </Link>
             {links.map((link) => (
-              <Link href="/profile/tomjneill">
-                <a className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+              <Link href={link.url}>
+                <a className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-4 text-sm font-medium rounded-md">
                   {/* Heroicon name: outline/users */}
                   {link.icon}
                   {link.name}
@@ -145,7 +144,10 @@ const SideNav = () => {
         </div>
       </div>
       {addSet && (
-        <Drawer title="Add new set" handleClose={() => setAddSet(false)}>
+        <Drawer
+          title="Add a new set of books"
+          handleClose={() => setAddSet(false)}
+        >
           <AddSet
             onFinish={(data) => {
               const { id } = data[0];
