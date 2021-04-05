@@ -39,9 +39,9 @@ const Feed = () => {
   return (
     <div className="h-full flex-1 w-full max-w-8xl">
       <h1 className="my-0 p-4 border-b border-gray-200 text-2xl font-bold w-full">
-        Updates
+        Everyone's recommendations
       </h1>
-      <div className="grid grid-cols-2 gap-4 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         <TopSets />
       </div>
     </div>

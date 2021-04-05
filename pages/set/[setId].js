@@ -208,10 +208,13 @@ const Set = (props) => {
             </div>
           </div>
           <div className="flex items-center justify-end md:justify-start">
-            <button className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700">
+            {/*
+              <button className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700">
               <FaRegHeart className="mr-2" />
               Like
             </button>
+              */}
+
             <button
               onClick={() => {
                 if (navigator.share && window.innerWidth < 736) {

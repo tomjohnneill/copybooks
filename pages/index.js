@@ -17,7 +17,7 @@ export default function Home() {
   }, [user]);
 
   return (
-    <div className="flex w-full">
+    <div className="md:flex w-full">
       <Head>
         <title>Copybooks</title>
         <link rel="icon" href="/favicon.ico" />
@@ -28,12 +28,12 @@ export default function Home() {
         <h2 className="text-xl opacity-80 my-4">
           Books recommended by real people, not Amazon's robots
         </h2>
-        <div className="grid grid-cols-3 w-full gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4">
           <TopSets />
         </div>
       </div>
-      <div className="w-full max-w-md h-screen">
-        <div className="fixed top-0 right-0 border-l border-gray-200 bg-white z-50 h-screen flex flex-col justify-center p-8 w-full max-w-md">
+      <div className="w-full max-w-md md:h-screen">
+        <div className="md:fixed top-0 right-0 border-l border-gray-200 bg-white z-50 md:h-screen flex flex-col justify-center p-8 w-full max-w-md">
           <h2 className="font-bold text-3xl ">
             <span className="opacity-80 font-light">
               All these books are crap?

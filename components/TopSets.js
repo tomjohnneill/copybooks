@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/initSupabase";
+import UserContext from "../lib/UserContext";
 
 const TopSets = ({}) => {
   const [setList, setSetList] = useState([]);
+
+  const { user } = useContext(UserContext);
 
   const fetchData = async () => {
     let { data: sets, error } = await supabase
@@ -13,6 +16,7 @@ const TopSets = ({}) => {
         id,
         name,
         emoji,
+        creator,
         description,
         image
       `
@@ -35,7 +39,12 @@ const TopSets = ({}) => {
         <img className="w-full h-32 object-cover" src={set.image} />
         <div className="p-4">
           <div className="font-bold">
-            {set.emoji} {set.name}
+            {set.emoji} {set.name}{" "}
+            {set.creator === user?.id && (
+              <span className="inline-flex ml-2 items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                Yours
+              </span>
+            )}
           </div>
           <p className="font-light opacity-80">{set.description}</p>
         </div>
