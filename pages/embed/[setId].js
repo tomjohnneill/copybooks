@@ -16,7 +16,9 @@ const EmbeddedSet = ({ set, params }) => {
   } = set || {};
 
   const { book_views: books } = set || {};
+  books?.sort((a, b) => a.rank - b.rank);
 
+  console.log(useRouter());
   const { query } = useRouter();
 
   return (
