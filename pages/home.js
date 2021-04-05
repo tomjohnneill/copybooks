@@ -33,8 +33,34 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Copybooks</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@tryCopybooks" />
+        <meta name="twitter:creator" content="@tomjneill" />
+        <meta
+          name="twitter:title"
+          content="Copybooks - Book recommendations from real people"
+        />
+        <meta
+          name="twitter:description"
+          content="Book recommendations from real people, not robots."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.copybooks.app/social-card.png"
+        />
+        <meta
+          property="og:image"
+          content="https://www.copybooks.app/social-card.png"
+        />
+        <meta name="twitter:image:alt" content="Bookshelf" />
+        <meta
+          property="og:description"
+          content="Book recommendations from real people, not robots."
+        />
+        <meta property="og:title" content="Copybooks" />
+        <meta property="og:url" content={"https://www.copybooks.app"} />
       </Head>
       <div className="flex min-h-screen w-full">
         {!user ? (
