@@ -16,8 +16,6 @@ const Book = ({
   onEdit,
   onDelete,
 }) => {
-  console.log({ creator });
-
   const { user } = useContext(UserContext);
 
   return (

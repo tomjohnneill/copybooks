@@ -14,7 +14,6 @@ const EmojiPicker = ({ defaultEmoji, onChange }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const onEmojiClick = (event, emojiObject) => {
-    console.log({ emojiObject });
     setChosenEmoji(emojiObject);
     onChange(emojiObject.emoji);
     setPickerOpen(false);

@@ -7,7 +7,6 @@ import UserContext from "../lib/UserContext";
 
 const SideNav = () => {
   const { user } = useContext(UserContext);
-  console.log({ user });
 
   const links = [
     {

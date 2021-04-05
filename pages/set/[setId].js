@@ -39,8 +39,6 @@ const Set = (props) => {
     created,
   } = set || {};
 
-  console.log({ set });
-
   const { book_views: books } = set || {};
   books?.sort((a, b) => a.rank - b.rank);
 
@@ -85,8 +83,6 @@ const Set = (props) => {
   };
 
   const { user } = useContext(UserContext);
-
-  console.log({ user });
 
   const [shareVisible, setShareVisible] = useState(false);
   const [embedVisible, setEmbedVisible] = useState(false);

@@ -10,8 +10,6 @@ import styles from "../styles/Home.module.css";
 export default function Home() {
   //const user = supabase.auth.user();
 
-  console.log("context auth", Auth.useUser());
-
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -31,8 +29,6 @@ export default function Home() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log({ user });
 
   return (
     <div className={styles.container}>

@@ -5,8 +5,6 @@ import SetGrid from "../../components/SetGrid";
 const Profile = () => {
   const { query } = useRouter();
 
-  console.log({ query });
-
   return (
     <div className="flex">
       <div>

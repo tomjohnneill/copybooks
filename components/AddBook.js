@@ -31,7 +31,6 @@ const AddBook = ({ setId, onFinish, edit }) => {
       isbn
     )}-M.jpg`;
     const imageExists = image ? true : false;
-    console.log({ imageExists });
     setDetails({
       author_name,
       title,
@@ -50,15 +49,12 @@ const AddBook = ({ setId, onFinish, edit }) => {
       fetch(`https://openlibrary.org/books/${details.edition_key[0]}.json`)
         .then((response) => response.json())
         .then((data) => {
-          console.log({ data });
           if (data.subtitle) {
             setDetails({ ...details, subtitle: data.subtitle });
           }
         });
     }
   }, [details.edition_key]);
-
-  console.log(bookLinkTypes("asdfasdf").uk);
 
   const handleSave = async (e) => {
     e.preventDefault();

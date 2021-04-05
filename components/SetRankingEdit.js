@@ -8,8 +8,6 @@ const SetRankingEdit = (props) => {
 
   const [books, setBooks] = useState(defaultBooks);
 
-  console.log({ books });
-
   const updateRankingsInDatabase = async (rankings) => {
     const promises = rankings.map((book, i) =>
       supabase
@@ -30,7 +28,6 @@ const SetRankingEdit = (props) => {
     const newRankings = books.slice();
     newRankings.splice(action.removedIndex, 1);
     newRankings.splice(action.addedIndex, 0, action.payload);
-    console.log({ newRankings });
     setBooks(newRankings);
     updateRankingsInDatabase(newRankings);
   };

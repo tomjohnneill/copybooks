@@ -10,7 +10,6 @@ const BookSearch = ({ onSelect }) => {
   useEffect(() => {
     if (debouncedText?.length > 0) {
       let ignore = false;
-      console.log({ debouncedText });
       fetch(
         `https://openlibrary.org/search.json?q=${debouncedText.replace(
           / /g,
@@ -25,7 +24,6 @@ const BookSearch = ({ onSelect }) => {
           }
         })
         .then((result) => {
-          console.log({ result });
           setInputItems(result?.docs?.slice(0, 10));
         });
       return () => {
@@ -33,8 +31,6 @@ const BookSearch = ({ onSelect }) => {
       };
     }
   }, [debouncedText]);
-
-  console.log({ inputItems });
 
   const handleSelect = (item) => {
     setInputItems([]);
