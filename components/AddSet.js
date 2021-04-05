@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import { supabase } from "../lib/initSupabase";
+import UserContext from "../lib/UserContext";
 
 const Picker = dynamic(() => import("./EmojiPicker"), {
   ssr: false,
@@ -9,6 +10,8 @@ const Picker = dynamic(() => import("./EmojiPicker"), {
 const AddSet = ({ existingSet, onFinish }) => {
   const [details, setDetails] = useState(existingSet || {});
 
+  const { user } = useContext(UserContext);
+
   const handleSave = async (e) => {
     const { book_views, ...rest } = details;
 
@@ -16,9 +19,9 @@ const AddSet = ({ existingSet, onFinish }) => {
     const { data, error } = existingSet
       ? await supabase
           .from("sets")
-          .update([{ ...rest }])
+          .update([{ ...rest, creator: user.id }])
           .match({ id: existingSet.id })
-      : await supabase.from("sets").insert([{ ...rest }]);
+      : await supabase.from("sets").insert([{ ...rest, creator: user.id }]);
     if (!error) {
       if (onFinish) {
         onFinish(data);

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import copy from "copy-to-clipboard";
 import { supabase } from "../../lib/initSupabase";
 import Book from "../../components/Book";
 import { FaRegHeart, FaShareSquare, FaPlus, FaEdit } from "react-icons/fa";
@@ -8,6 +9,7 @@ import AddBook from "../../components/AddBook";
 import AddSet from "../../components/AddSet";
 import Head from "next/head";
 import UserContext from "../../lib/UserContext";
+import Modal from "../../components/Modal";
 
 const fetchData = async (setId) => {
   let { data: set, error } = await supabase
@@ -97,6 +99,8 @@ const Set = (props) => {
 
   console.log({ user });
 
+  const [shareVisible, setShareVisible] = useState(false);
+
   return (
     <div className="w-full">
       <Head>
@@ -114,6 +118,39 @@ const Set = (props) => {
           content={`https://copybooks.app/set/` + set?.id}
         />
       </Head>
+      {shareVisible && (
+        <Modal
+          icon={<FaShareSquare />}
+          title="Share"
+          handleClose={() => setShareVisible(false)}
+          actions={null}
+        >
+          <div>
+            <div className="flex my-4">
+              {["Embed", "Twitter", "WhatsApp", "Facebook", "Email"].map(
+                (item) => (
+                  <div className="mr-4 flex flex-col items-center">
+                    <div className="rounded-full bg-purple-200 h-12 w-12"></div>
+                    <span className="text-xs">{item}</span>
+                  </div>
+                )
+              )}
+            </div>
+            <div className="text-xs bg-gray-100 p-2 flex">
+              <input
+                className="p-1 bg-gray-100 w-full mr-2"
+                value={window.location.href}
+              />
+              <button
+                className="text-blue-600 font-bold"
+                onClick={() => copy(window.location.href)}
+              >
+                COPY
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
       {!editSetVisible && user?.id === creator && (
         <button
           onClick={() => setEditSetVisible(true)}
@@ -176,7 +213,23 @@ const Set = (props) => {
               <FaRegHeart className="mr-2" />
               Like
             </button>
-            <button className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 ml-2">
+            <button
+              onClick={() => {
+                if (navigator.share && window.innerWidth < 736) {
+                  navigator
+                    .share({
+                      url: window.location.href,
+                    })
+                    .then(() => {
+                      console.log("Thanks for sharing!");
+                    })
+                    .catch(console.error);
+                } else {
+                  setShareVisible(true);
+                }
+              }}
+              className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 ml-2"
+            >
               <FaShareSquare className="mr-2" /> Share
             </button>
           </div>
