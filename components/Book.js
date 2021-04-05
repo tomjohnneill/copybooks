@@ -9,6 +9,7 @@ const Book = ({
   title,
   author_name,
   image,
+  noEdit,
   isRanked,
   subtitle,
   comment,
@@ -46,7 +47,7 @@ const Book = ({
               <p className="mt-2">{comment}</p>
             </div>
           </div>
-          {user?.id === creator && (
+          {user?.id === creator && !noEdit && (
             <div className="block">
               <div className="flex">
                 <button

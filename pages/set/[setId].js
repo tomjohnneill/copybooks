@@ -2,7 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import copy from "copy-to-clipboard";
 import { supabase } from "../../lib/initSupabase";
 import Book from "../../components/Book";
-import { FaRegHeart, FaShareSquare, FaPlus, FaEdit } from "react-icons/fa";
+import {
+  FaRegHeart,
+  FaShareSquare,
+  FaPlus,
+  FaEdit,
+  FaCode,
+} from "react-icons/fa";
 import BookSearch from "../../components/BookSearch";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
@@ -11,28 +17,8 @@ import Head from "next/head";
 import UserContext from "../../lib/UserContext";
 import Modal from "../../components/Modal";
 import ShareButtons from "../../components/ShareButtons";
-
-const fetchData = async (setId) => {
-  let { data: set, error } = await supabase
-    .from("sets")
-    .select(
-      `
-      creator,
-      id,
-      name,
-      emoji,
-      description,
-      image,
-      book_views (
-        book,
-        id
-      )
-    `
-    )
-    .eq("id", setId)
-    .order("id", true);
-  return { set, error };
-};
+import { fetchData } from "../../lib/fetchData";
+import EmbedOptions from "../../components/EmbedOptions";
 
 const Set = (props) => {
   const [set, setSet] = useState(props.set);
@@ -101,6 +87,7 @@ const Set = (props) => {
   console.log({ user });
 
   const [shareVisible, setShareVisible] = useState(false);
+  const [embedVisible, setEmbedVisible] = useState(false);
 
   return (
     <div className="w-full">
@@ -119,6 +106,9 @@ const Set = (props) => {
           content={`https://copybooks.app/set/` + set?.id}
         />
       </Head>
+      {embedVisible && (
+        <EmbedOptions id={set.id} handleClose={() => setEmbedVisible(false)} />
+      )}
       {shareVisible && (
         <Modal
           icon={<FaShareSquare />}
@@ -129,10 +119,18 @@ const Set = (props) => {
           <div>
             <div className="flex my-4">
               {["Embed"].map((item) => (
-                <div className="mr-4 flex flex-col items-center">
-                  <div className="rounded-full bg-purple-200 h-12 w-12"></div>
+                <button
+                  className="mr-4 flex flex-col items-center cursor-pointer"
+                  onClick={() => {
+                    setShareVisible(false);
+                    setEmbedVisible(true);
+                  }}
+                >
+                  <div className="rounded-full bg-purple-700 h-12 w-12 flex items-center justify-center">
+                    <FaCode className="text-white text-2xl" />
+                  </div>
                   <span className="text-xs">{item}</span>
-                </div>
+                </button>
               ))}
               <ShareButtons
                 link={window.location.href}

@@ -1,5 +1,14 @@
 const Modal = (props) => {
-  const { actions, children, title, handleClose, icon } = props;
+  const {
+    actions,
+    children,
+    title,
+    handleClose,
+    icon,
+    contentClassName,
+  } = props;
+
+  console.log({ props });
 
   return (
     <div
@@ -45,7 +54,9 @@ Leaving: "ease-in duration-200"
           onClick={(e) => {
             e.stopPropagation();
           }}
-          className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
+          className={` inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 
+          text-left overflow-hidden shadow-xl transform transition-all sm:my-8 
+          sm:align-middle sm:max-w-lg sm:w-full sm:p-6 ${contentClassName}`}
         >
           <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
             <button
@@ -73,11 +84,14 @@ Leaving: "ease-in duration-200"
             </button>
           </div>
           <div className="sm:flex sm:items-start">
-            <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 sm:mx-0 sm:h-10 sm:w-10">
-              {/* Heroicon name: outline/exclamation */}
-              {icon}
-            </div>
-            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            {icon && (
+              <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 sm:mx-0 sm:h-10 sm:w-10">
+                {/* Heroicon name: outline/exclamation */}
+                {icon}
+              </div>
+            )}
+
+            <div className="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3
                 className="text-lg leading-6 font-medium text-gray-900"
                 id="modal-title"
