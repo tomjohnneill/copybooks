@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { supabase } from "../lib/initSupabase";
 import { bookLinkTypes, bookShopLogos } from "../lib/bookLinkTypes";
 import BookSearch from "./BookSearch";
 import { useRouter } from "next/router";
+import UserContext from "../lib/UserContext";
 
 const bestISBN = (isbn) => {
   if (!isbn || !isbn[0]) {
@@ -43,6 +44,8 @@ const AddBook = ({ setId, onFinish, edit }) => {
 
   const { locale } = useRouter();
 
+  const { user } = useContext(UserContext);
+
   const [selectedLocale, setSelectedLocale] = useState(locale);
 
   const [purchaseLinks, setPurchaseLinks] = useState(edit?.book?.purchaseLinks);
@@ -68,11 +71,21 @@ const AddBook = ({ setId, onFinish, edit }) => {
     const { data, error } = edit
       ? await supabase
           .from("book_views")
-          .update([{ set_id: setId, book: { ...details, purchaseLinks } }])
+          .update([
+            {
+              creator: user.id,
+              set_id: setId,
+              book: { ...details, purchaseLinks },
+            },
+          ])
           .match({ id: edit.id })
-      : await supabase
-          .from("book_views")
-          .insert([{ set_id: setId, book: { ...details, purchaseLinks } }]);
+      : await supabase.from("book_views").insert([
+          {
+            creator: user.id,
+            set_id: setId,
+            book: { ...details, purchaseLinks },
+          },
+        ]);
     if (!error) {
       onFinish();
     } else {
