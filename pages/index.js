@@ -1,19 +1,55 @@
 import Head from "next/head";
-import Feed from "../components/Feed";
-import FollowBar from "../components/FollowBar";
-import SideNav from "../components/SideNav";
+import { supabase } from "../lib/initSupabase";
+import { Auth } from "@supabase/ui";
 import styles from "../styles/Home.module.css";
+import { useContext, useEffect } from "react";
+import UserContext from "../lib/UserContext";
+import Router from "next/router";
+import TopSets from "../components/TopSets";
 
 export default function Home() {
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user?.id) {
+      Router.push("/home");
+    }
+  }, [user]);
+
   return (
-    <div className={styles.container}>
+    <div className="flex w-full">
       <Head>
-        <title>Create Next App</title>
+        <title>Copybooks</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex">
-        <Feed />
-        <FollowBar />
+
+      <div className="flex-1 p-8">
+        <h1 className="text-4xl font-bold">Copybooks</h1>
+        <h2 className="text-xl opacity-80 my-4">
+          Books recommended by real people, not Amazon's robots
+        </h2>
+        <div className="grid grid-cols-3 w-full gap-4">
+          <TopSets />
+        </div>
+      </div>
+      <div className="w-full max-w-md h-screen">
+        <div className="fixed top-0 right-0 border-l border-gray-200 bg-white z-50 h-screen flex flex-col justify-center p-8 w-full max-w-md">
+          <h2 className="font-bold text-3xl ">
+            <span className="opacity-80 font-light">
+              All these books are crap?
+            </span>
+            <br />
+            <br />
+            Sign up. Make your own recommendations.
+          </h2>
+          <Auth
+            view="sign_up"
+            supabaseClient={supabase}
+            providers={[]}
+            socialLayout="horizontal"
+            socialButtonSize="xlarge"
+          />
+        </div>
       </div>
     </div>
   );

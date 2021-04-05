@@ -34,8 +34,9 @@ function MyApp({ Component, pageProps }) {
           session,
         }}
       >
-        <div className="flex flex-row min-h-screen container">
-          <SideNav />
+        <div className="flex flex-row min-h-screen ">
+          {user?.id && <SideNav />}
+
           <main className="flex flex-col items-start flex-shrink flex-grow flex-1">
             <Component {...pageProps} />
           </main>

@@ -1,3 +1,4 @@
+import TopSets from "./TopSets";
 import Update from "./Update";
 
 const dummyPosts = [
@@ -40,10 +41,8 @@ const Feed = () => {
       <h1 className="my-0 p-4 border-b border-gray-200 text-2xl font-bold w-full">
         Updates
       </h1>
-      <div>
-        {dummyPosts.map((post) => (
-          <Update {...post} />
-        ))}
+      <div className="grid grid-cols-2 gap-4 p-4">
+        <TopSets />
       </div>
     </div>
   );
