@@ -10,6 +10,7 @@ import AddSet from "../../components/AddSet";
 import Head from "next/head";
 import UserContext from "../../lib/UserContext";
 import Modal from "../../components/Modal";
+import ShareButtons from "../../components/ShareButtons";
 
 const fetchData = async (setId) => {
   let { data: set, error } = await supabase
@@ -127,14 +128,16 @@ const Set = (props) => {
         >
           <div>
             <div className="flex my-4">
-              {["Embed", "Twitter", "WhatsApp", "Facebook", "Email"].map(
-                (item) => (
-                  <div className="mr-4 flex flex-col items-center">
-                    <div className="rounded-full bg-purple-200 h-12 w-12"></div>
-                    <span className="text-xs">{item}</span>
-                  </div>
-                )
-              )}
+              {["Embed"].map((item) => (
+                <div className="mr-4 flex flex-col items-center">
+                  <div className="rounded-full bg-purple-200 h-12 w-12"></div>
+                  <span className="text-xs">{item}</span>
+                </div>
+              ))}
+              <ShareButtons
+                link={window.location.href}
+                text={description || "I'd recommend these books: "}
+              />
             </div>
             <div className="text-xs bg-gray-100 p-2 flex">
               <input
