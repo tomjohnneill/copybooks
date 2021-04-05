@@ -275,6 +275,7 @@ const Set = (props) => {
 export async function getStaticPaths() {
   return {
     paths: [],
+
     fallback: true, // See the "fallback" section below
   };
 }
@@ -287,6 +288,7 @@ export async function getStaticProps(context) {
   if (error) console.log("error", error);
 
   return {
+    revalidate: 120,
     props: { set: set?.[0] || {} }, // will be passed to the page component as props
   };
 }
