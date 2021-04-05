@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { supabase } from "../../lib/initSupabase";
 import Book from "../../components/Book";
 import { FaRegHeart, FaShareSquare, FaPlus, FaEdit } from "react-icons/fa";
@@ -7,12 +7,14 @@ import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
 import AddSet from "../../components/AddSet";
 import Head from "next/head";
+import UserContext from "../../lib/UserContext";
 
 const fetchData = async (setId) => {
   let { data: set, error } = await supabase
     .from("sets")
     .select(
       `
+      creator,
       id,
       name,
       emoji,
@@ -91,6 +93,10 @@ const Set = (props) => {
     }
   };
 
+  const { user } = useContext(UserContext);
+
+  console.log({ user });
+
   return (
     <div className="w-full">
       <Head>
@@ -108,10 +114,10 @@ const Set = (props) => {
           content={`https://copybooks.app/set/` + set?.id}
         />
       </Head>
-      {!editSetVisible && (
+      {!editSetVisible && user?.id === creator && (
         <button
           onClick={() => setEditSetVisible(true)}
-          className="absolute top-0 right-0 bg-white mt-8 mr-8 flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 "
+          className="absolute top-0 right-0 bg-white mt-4 mr-4 md:mt-8 md:mr-8 flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 "
         >
           <FaEdit className="mr-2" />
           Edit Set
@@ -147,14 +153,14 @@ const Set = (props) => {
         </Drawer>
       )}
       <img src={image} className="w-full h-64 object-cover" />
-      <div className="py-4 px-8">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+      <div className="py-4 px-4 md:px-8">
+        <div className="md:flex justify-between items-center">
+          <div className="md:flex items-center">
             <h1 className="text-4xl font-bold my-4">
               {emoji} {name}
             </h1>
-            <div className="ml-4 flex">
-              {!addBookVisible && (
+            <div className="md:ml-4 flex">
+              {!addBookVisible && user?.id === creator && (
                 <button
                   onClick={handleAddBook}
                   className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 bg-purple-700 text-white hover:bg-purple-900 "
@@ -165,7 +171,7 @@ const Set = (props) => {
               )}
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center justify-end md:justify-start">
             <button className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700">
               <FaRegHeart className="mr-2" />
               Like
@@ -182,6 +188,7 @@ const Set = (props) => {
             <Book
               {...book.book}
               {...book}
+              creator={creator}
               rank={i + 1}
               isRanked
               onDelete={(id) => handleDelete(id)}

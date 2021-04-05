@@ -24,7 +24,9 @@ const Profile = () => {
         </div>
         <SetGrid userId={query?.profileId} />
       </div>
-      <FollowBar />
+      <div className="hidden md:block">
+        <FollowBar />
+      </div>
     </div>
   );
 };

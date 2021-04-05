@@ -14,7 +14,7 @@ const Drawer = (props) => {
         <div className="absolute inset-0 overflow-hidden">
           {/* Background overlay, show/hide based on slide-over state. */}
           <div className="absolute inset-0" aria-hidden="true" />
-          <div className="absolute inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16">
+          <div className="absolute inset-y-0 right-0 md:pl-10 max-w-full flex sm:pl-16">
             {/*
       Slide-over panel, show/hide based on slide-over state.
     
@@ -25,7 +25,7 @@ const Drawer = (props) => {
         From: "translate-x-0"
         To: "translate-x-full"
     */}
-            <div className="w-screen max-w-2xl">
+            <div className="w-screen md:max-w-2xl">
               <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
                 <div className="px-4 sm:px-6">
                   <div className="flex items-start justify-between">
