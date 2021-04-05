@@ -19,6 +19,7 @@ import Modal from "../../components/Modal";
 import ShareButtons from "../../components/ShareButtons";
 import { fetchData } from "../../lib/fetchData";
 import EmbedOptions from "../../components/EmbedOptions";
+import SetRankingEdit from "../../components/SetRankingEdit";
 
 const Set = (props) => {
   const [set, setSet] = useState(props.set);
@@ -41,6 +42,7 @@ const Set = (props) => {
   console.log({ set });
 
   const { book_views: books } = set || {};
+  books?.sort((a, b) => a.rank - b.rank);
 
   const [addBookVisible, setAddBookVisible] = useState(false);
   const handleAddBook = () => {
@@ -238,19 +240,31 @@ const Set = (props) => {
         <p className="opacity-80 mt-4 max-w-3xl">{description}</p>
 
         <div className="pt-4">
-          {books?.map((book, i) => (
-            <Book
-              {...book.book}
-              {...book}
-              creator={creator}
-              rank={i + 1}
+          {user?.id === creator ? (
+            <SetRankingEdit
+              setUpdateCount={setUpdateCount}
+              updateCount={updateCount}
+              defaultBooks={books}
+              handleDelete={handleDelete}
+              setFocusedBook={setFocusedBook}
               isRanked
-              onDelete={(id) => handleDelete(id)}
-              onEdit={(id) => {
-                setFocusedBook(book);
-              }}
+              creator={creator}
             />
-          ))}
+          ) : (
+            books?.map((book, i) => (
+              <Book
+                {...book.book}
+                {...book}
+                creator={creator}
+                rank={i + 1}
+                isRanked
+                onDelete={(id) => handleDelete(id)}
+                onEdit={(id) => {
+                  setFocusedBook(book);
+                }}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

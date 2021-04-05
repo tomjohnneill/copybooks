@@ -19,6 +19,7 @@
     "react-dropdown-select": "^4.7.4",
     "react-icons": "^4.2.0",
     "react-select-search": "^3.0.5",
+    "react-smooth-dnd": "^0.11.1",
     "use-debounce": "^6.0.1"
   },
   "devDependencies": {
