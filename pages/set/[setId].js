@@ -241,7 +241,7 @@ const Set = (props) => {
               setUpdateCount={setUpdateCount}
               updateCount={updateCount}
               defaultBooks={books}
-              handleDelete={handleDelete}
+              handleDelete={(id) => handleDelete(id)}
               setFocusedBook={setFocusedBook}
               isRanked
               creator={creator}

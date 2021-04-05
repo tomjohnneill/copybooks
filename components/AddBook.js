@@ -3,6 +3,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { supabase } from "../lib/initSupabase";
 import { bookLinkTypes, bookShopLogos } from "../lib/bookLinkTypes";
 import BookSearch from "./BookSearch";
+import { useRouter } from "next/router";
 
 const bestISBN = (isbn) => {
   if (!isbn || !isbn[0]) {
@@ -40,6 +41,12 @@ const AddBook = ({ setId, onFinish, edit }) => {
     });
   };
 
+  const { locale } = useRouter();
+
+  const [selectedLocale, setSelectedLocale] = useState(locale);
+
+  const [purchaseLinks, setPurchaseLinks] = useState(edit?.book?.purchaseLinks);
+
   const handleDetailChange = ({ field, value }) => {
     setDetails({ ...details, [field]: value });
   };
@@ -61,17 +68,35 @@ const AddBook = ({ setId, onFinish, edit }) => {
     const { data, error } = edit
       ? await supabase
           .from("book_views")
-          .update([{ set_id: setId, book: details }])
+          .update([{ set_id: setId, book: { ...details, purchaseLinks } }])
           .match({ id: edit.id })
       : await supabase
           .from("book_views")
-          .insert([{ set_id: setId, book: details }]);
+          .insert([{ set_id: setId, book: { ...details, purchaseLinks } }]);
     if (!error) {
       onFinish();
     } else {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    if (!edit?.book?.purchaseLinks) {
+      setPurchaseLinks(bookLinkTypes(bestISBN(details.isbn)));
+    }
+  }, [details?.isbn]);
+
+  const updateLink = ({ shop, locale, value }) => {
+    setPurchaseLinks({
+      ...purchaseLinks,
+      [locale]: {
+        ...purchaseLinks[locale],
+        [shop]: value,
+      },
+    });
+  };
+
+  console.log({ purchaseLinks });
 
   return (
     <form onSubmit={handleSave}>
@@ -167,21 +192,30 @@ const AddBook = ({ setId, onFinish, edit }) => {
           </p>
 
           <div className="grid grid-cols-2 gap-4 py-2 w-full">
-            {Object.keys(bookLinkTypes(details.isbn?.[0]).uk).map((shop) => (
-              <div className="flex items-center">
-                <a
-                  href={bookLinkTypes(bestISBN(details.isbn)).uk[shop]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={bookShopLogos[shop]} className="h-12 mr-4" />
-                </a>
-                <input
-                  className="flex-1 block border border-gray-200 rounded p-2"
-                  defaultValue={bookLinkTypes(bestISBN(details.isbn)).uk[shop]}
-                />
-              </div>
-            ))}
+            {Object.keys(bookLinkTypes(details.isbn?.[0])[locale]).map(
+              (shop) => (
+                <div className="flex items-center">
+                  <a
+                    href={purchaseLinks[locale][shop]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src={bookShopLogos[shop]} className="h-12 mr-4" />
+                  </a>
+                  <input
+                    onChange={(e) =>
+                      updateLink({
+                        shop,
+                        locale: selectedLocale,
+                        value: e.target.value,
+                      })
+                    }
+                    className="flex-1 block border border-gray-200 rounded p-2"
+                    value={purchaseLinks[locale][shop]}
+                  />
+                </div>
+              )
+            )}
           </div>
           <label>Your Recommendation:</label>
           <textarea

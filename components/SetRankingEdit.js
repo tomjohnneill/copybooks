@@ -1,12 +1,24 @@
 import { Container, Draggable } from "react-smooth-dnd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Book from "./Book";
 import { supabase } from "../lib/initSupabase";
 
 const SetRankingEdit = (props) => {
-  const { defaultBooks, setFocusedBook, updateCount, setUpdateCount } = props;
+  const {
+    defaultBooks,
+    setFocusedBook,
+    updateCount,
+    setUpdateCount,
+    handleDelete,
+  } = props;
 
   const [books, setBooks] = useState(defaultBooks);
+
+  useEffect(() => {
+    if (defaultBooks) {
+      setBooks(defaultBooks);
+    }
+  }, [defaultBooks]);
 
   const updateRankingsInDatabase = async (rankings) => {
     const promises = rankings.map((book, i) =>
@@ -59,6 +71,7 @@ const SetRankingEdit = (props) => {
             {...book}
             rank={i + 1}
             {...props}
+            onDelete={(id) => handleDelete(id)}
             onEdit={(id) => {
               setFocusedBook(book);
             }}

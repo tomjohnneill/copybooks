@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useContext } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import UserContext from "../lib/UserContext";
@@ -7,6 +8,7 @@ const Book = ({
   rank,
   creator,
   title,
+  purchaseLinks,
   author_name,
   image,
   noEdit,
@@ -18,8 +20,14 @@ const Book = ({
 }) => {
   const { user } = useContext(UserContext);
 
+  const { locale } = useRouter();
+
   return (
-    <a href="#" target="_blank" rel="noopener noreferrer">
+    <a
+      href={purchaseLinks?.[locale]?.amazon}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <div className="flex w-full">
         {isRanked && (
           <div className="text-2xl md:text-6xl font-bold mr-4 opacity-80">
@@ -52,9 +60,11 @@ const Book = ({
                   className="border border-gray-200 rounded flex items-center px-2 ml-2 mt-2 
                 py-1 hover:border-red-400 focus:border-red-400  hover:text-red-700"
                   onClick={(e) => {
+                    console.log("should be deleting");
                     e.stopPropagation();
                     e.preventDefault();
                     if (onDelete) {
+                      console.log("onDelete exists");
                       onDelete(id);
                     }
                   }}
