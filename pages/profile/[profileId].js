@@ -12,7 +12,7 @@ const Profile = () => {
   const [addSet, setAddSet] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {addSet && (
         <Drawer
           title="Add a new set of books"
@@ -27,7 +27,7 @@ const Profile = () => {
           />
         </Drawer>
       )}
-      <div>
+      <div className="w-full">
         {/*  
             <img
           src="https://istheshipstillstuck.com/ever-given.jpg"

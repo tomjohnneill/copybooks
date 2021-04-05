@@ -71,6 +71,8 @@ const Set = (props) => {
   const [editSetVisible, setEditSetVisible] = useState(false);
 
   const handleDelete = async (id) => {
+    console.log(`should be deleting ${id}`);
+
     const { data, error } = await supabase
       .from("book_views")
       .delete()

@@ -31,12 +31,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-full">
         {!user ? (
           <div className="w-full h-full flex justify-center items-center p-4">
             <Auth
@@ -56,6 +56,6 @@ export default function Home() {
         <FollowBar />
         */}
       </div>
-    </div>
+    </>
   );
 }
