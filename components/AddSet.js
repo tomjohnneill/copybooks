@@ -79,6 +79,7 @@ const AddSet = ({ existingSet, onFinish }) => {
       <label>Set Description</label>
       <textarea
         rows={3}
+        placeholder="Who should read this book? Why might someone not want to read it?"
         className="border p-2 rounded border-gray-200 block w-full mb-4"
         value={details.description}
         onChange={(e) =>

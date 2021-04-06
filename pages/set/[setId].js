@@ -8,8 +8,8 @@ import {
   FaPlus,
   FaEdit,
   FaCode,
+  FaTrash,
 } from "react-icons/fa";
-import BookSearch from "../../components/BookSearch";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
 import AddSet from "../../components/AddSet";
@@ -20,6 +20,7 @@ import ShareButtons from "../../components/ShareButtons";
 import { fetchData } from "../../lib/fetchData";
 import EmbedOptions from "../../components/EmbedOptions";
 import SetRankingEdit from "../../components/SetRankingEdit";
+import DeleteSet from "../../components/DeleteSet";
 
 const Set = (props) => {
   const [set, setSet] = useState(props.set);
@@ -88,6 +89,7 @@ const Set = (props) => {
 
   const [shareVisible, setShareVisible] = useState(false);
   const [embedVisible, setEmbedVisible] = useState(false);
+  const [deleteVisible, setDeleteVisible] = useState(false);
 
   return (
     <div className="w-full">
@@ -106,6 +108,9 @@ const Set = (props) => {
           content={`https://copybooks.app/set/` + set?.id}
         />
       </Head>
+      {deleteVisible && (
+        <DeleteSet setVisible={setDeleteVisible} id={set?.id} />
+      )}
       {embedVisible && (
         <EmbedOptions id={set.id} handleClose={() => setEmbedVisible(false)} />
       )}
@@ -152,15 +157,27 @@ const Set = (props) => {
           </div>
         </Modal>
       )}
-      {!editSetVisible && user?.id === creator && (
-        <button
-          onClick={() => setEditSetVisible(true)}
-          className="absolute top-0 right-0 bg-white mt-4 mr-4 md:mt-8 md:mr-8 flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 "
-        >
-          <FaEdit className="mr-2" />
-          Edit Set
-        </button>
+      {user?.id === creator && (
+        <div className="absolute top-0 right-0 mt-4 mr-4 md:mt-8 md:mr-8 flex">
+          <button
+            onClick={() => setDeleteVisible(true)}
+            className=" bg-white flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-red-400 hover:text-red-700 "
+          >
+            <FaTrash className="mr-2" />
+            Delete Set
+          </button>
+          {!editSetVisible && (
+            <button
+              onClick={() => setEditSetVisible(true)}
+              className="bg-white  flex ml-2 items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700 "
+            >
+              <FaEdit className="mr-2" />
+              Edit Set
+            </button>
+          )}
+        </div>
       )}
+
       {addBookVisible && (
         <Drawer
           title="New book details"
