@@ -2,8 +2,10 @@ import "tailwindcss/tailwind.css";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/initSupabase";
 import UserContext from "../lib/UserContext";
+import Link from "next/link";
 import SideNav from "../components/SideNav";
 import styles from "../styles/Home.module.css";
+import { FaBook } from "react-icons/fa";
 
 function MyApp({ Component, pageProps }) {
   const [session, setSession] = useState(null);
@@ -40,6 +42,15 @@ function MyApp({ Component, pageProps }) {
             !window.location.href.includes("/embed") && <SideNav />}
 
           <main className="flex flex-col items-start flex-shrink flex-grow flex-1">
+            {!user?.id &&
+              typeof window !== "undefined" &&
+              !window.location.href.includes("/embed") && (
+                <Link href="/">
+                  <div className="flex text-xl items-center text-gray-600 font-bold py-2 px-4 md:px-8 bg-white border-b border-gray-200 w-full cursor-pointer">
+                    <FaBook className="mr-2" /> Copybooks
+                  </div>
+                </Link>
+              )}
             <Component {...pageProps} />
           </main>
         </div>
