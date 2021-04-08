@@ -272,7 +272,7 @@ const Set = (props) => {
               ) : (
                 <FaRegHeart className="mr-2" />
               )}
-              Like{liked && "d"}
+              {set?.likes?.length} Like{set?.likes?.length === 1 ? "" : "s"}
             </button>
 
             <button

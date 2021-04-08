@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import { FaBook, FaHeart } from "react-icons/fa";
 import { supabase } from "../lib/initSupabase";
 import UserContext from "../lib/UserContext";
 
@@ -28,6 +29,9 @@ const TopSets = ({}) => {
         image,
         book_views (
           id
+        ),
+        likes (
+          userId
         )
       `
       )
@@ -35,7 +39,11 @@ const TopSets = ({}) => {
     if (error) {
       alert(error.message);
     } else {
-      setSetList(sets.filter((set) => set.book_views.length > 0));
+      setSetList(
+        sets
+          .filter((set) => set.book_views.length > 0)
+          .sort((a, b) => b.likes?.length - a.likes?.length)
+      );
     }
   };
 
@@ -45,21 +53,29 @@ const TopSets = ({}) => {
 
   return setList.map((set, i) => (
     <Link href={`/set/${set.id}`}>
-      <a className="max-w-xl w-full rounded-lg overflow-hidden border border-gray-200">
+      <a className="max-w-xl w-full rounded-lg overflow-hidden border border-gray-200 flex flex-col">
         <img
           className="w-full h-32 object-cover"
           src={set.image || defaultImages[i % defaultImages.length]}
         />
-        <div className="p-4">
-          <div className="font-bold">
-            {set.emoji} {set.name}{" "}
-            {set.creator === user?.id && (
-              <span className="inline-flex ml-2 items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                Yours
-              </span>
-            )}
+        <div className="p-4 flex flex-col justify-between h-full flex-1">
+          <div>
+            <div className="font-bold">
+              {set.emoji} {set.name}{" "}
+              {set.creator === user?.id && (
+                <span className="inline-flex ml-2 items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                  Yours
+                </span>
+              )}
+            </div>
+            <p className="font-light opacity-80">{set.description}</p>
           </div>
-          <p className="font-light opacity-80">{set.description}</p>
+          <div className="flex items-center text-gray-600 pt-2">
+            <FaBook className="text-gray-600 mr-2" />
+            {set?.book_views?.length} book
+            {set?.book_views?.length === 1 ? "" : "s"}
+            <FaHeart className="text-gray-600 mr-2 ml-4" /> {set?.likes?.length}
+          </div>
         </div>
       </a>
     </Link>
