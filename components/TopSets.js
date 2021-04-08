@@ -1,8 +1,5 @@
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { FaBook, FaHeart } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/initSupabase";
-import UserContext from "../lib/UserContext";
 import SetPreview from "./SetPreview";
 
 const TopSets = ({}) => {

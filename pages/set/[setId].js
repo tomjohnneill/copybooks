@@ -91,27 +91,29 @@ const Set = (props) => {
   const liked = set?.likes?.map((item) => item.userId)?.includes(user?.id);
 
   const handleLike = async () => {
-    if (liked) {
-      const { data, error } = await supabase
-        .from("likes")
-        .delete()
-        .match({ userId: user?.id });
-      if (error) {
-        alert(error.message);
+    if (user?.id) {
+      if (liked) {
+        const { data, error } = await supabase
+          .from("likes")
+          .delete()
+          .match({ userId: user?.id });
+        if (error) {
+          alert(error.message);
+        } else {
+          setUpdateCount(updateCount + 1);
+        }
       } else {
-        setUpdateCount(updateCount + 1);
-      }
-    } else {
-      const { data, error } = await supabase.from("likes").insert([
-        {
-          setId: set.id,
-          userId: user?.id,
-        },
-      ]);
-      if (error) {
-        alert(error.message);
-      } else {
-        setUpdateCount(updateCount + 1);
+        const { data, error } = await supabase.from("likes").insert([
+          {
+            setId: set.id,
+            userId: user?.id,
+          },
+        ]);
+        if (error) {
+          alert(error.message);
+        } else {
+          setUpdateCount(updateCount + 1);
+        }
       }
     }
   };
