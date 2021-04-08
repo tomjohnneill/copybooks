@@ -29,14 +29,12 @@ const TopSets = ({}) => {
         book_views (
           id
         )
-      `,
-        { count: "exact" }
+      `
       )
       .order("id", true);
     if (error) {
       alert(error.message);
     } else {
-      console.log({ sets });
       setSetList(sets.filter((set) => set.book_views.length > 0));
     }
   };

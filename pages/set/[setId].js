@@ -9,6 +9,7 @@ import {
   FaEdit,
   FaCode,
   FaTrash,
+  FaHeart,
 } from "react-icons/fa";
 import Drawer from "../../components/Drawer";
 import AddBook from "../../components/AddBook";
@@ -86,6 +87,36 @@ const Set = (props) => {
   };
 
   const { user } = useContext(UserContext);
+
+  const liked = set?.likes?.map((item) => item.userId)?.includes(user?.id);
+
+  const handleLike = async () => {
+    if (liked) {
+      const { data, error } = await supabase
+        .from("likes")
+        .delete()
+        .match({ userId: user?.id });
+      if (error) {
+        alert(error.message);
+      } else {
+        setUpdateCount(updateCount + 1);
+      }
+    } else {
+      const { data, error } = await supabase.from("likes").insert([
+        {
+          setId: set.id,
+          userId: user?.id,
+        },
+      ]);
+      if (error) {
+        alert(error.message);
+      } else {
+        setUpdateCount(updateCount + 1);
+      }
+    }
+  };
+
+  console.log({ set });
 
   const [shareVisible, setShareVisible] = useState(false);
   const [embedVisible, setEmbedVisible] = useState(false);
@@ -227,12 +258,22 @@ const Set = (props) => {
             </div>
           </div>
           <div className="flex items-center justify-end md:justify-start">
-            {/*
-              <button className="flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border border-gray-200 text-gray-800 hover:border-purple-400 hover:text-purple-700">
-              <FaRegHeart className="mr-2" />
-              Like
+            <button
+              onClick={handleLike}
+              className={`flex items-center opacity-90 font-medium py-2 px-4 rounded-lg border 
+              ${
+                liked
+                  ? "text-purple-700 border-purple-400"
+                  : "text-gray-800 border-gray-200"
+              } hover:border-purple-400 hover:text-purple-700`}
+            >
+              {liked ? (
+                <FaHeart className="mr-2 text-purple-700" />
+              ) : (
+                <FaRegHeart className="mr-2" />
+              )}
+              Like{liked && "d"}
             </button>
-              */}
 
             <button
               onClick={() => {
